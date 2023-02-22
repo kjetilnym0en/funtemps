@@ -5,9 +5,9 @@ import (
 	"fmt"
 
 	"github.com/kjetilnym0en/funtemps/conv"
-
 )
-//Definerer flag-variablene i hoved-"scope"
+
+// Definerer flag-variablene i hoved-"scope"
 var fahr, celsius, kelvin float64
 var out string
 
@@ -26,11 +26,15 @@ func main() {
 
 	switch {
 	case isFlagPassed("F"):
+
 		inputTemp = fahr
+		fmt.Printf("Input temperatur: %.2f°F er ", inputTemp)
 	case isFlagPassed("C"):
 		inputTemp = celsius
+		fmt.Printf("Input temperatur: %.2f°C er ", inputTemp)
 	case isFlagPassed("K"):
 		inputTemp = kelvin
+		fmt.Printf("Input temperatur: %.2f°K er ", inputTemp)
 	default:
 		fmt.Println("No input temperature provided.")
 		return
