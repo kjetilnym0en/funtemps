@@ -7,6 +7,71 @@ import (
 	"github.com/kjetilnym0en/funtemps/conv"
 
 )
+//Definerer flag-variablene i hoved-"scope"
+var fahr, celsius, kelvin float64
+var out string
+
+// Definerer og initialiserer flagg-variablene
+func init() {
+	flag.Float64Var(&fahr, "F", 0.0, "temperatur i grader fahrenheit")
+	flag.Float64Var(&celsius, "C", 0.0, "temperatur i grader celsius")
+	flag.Float64Var(&kelvin, "K", 0.0, "temperatur i kelvin")
+	flag.StringVar(&out, "out", "C", "beregne temperatur i C - celsius, F - farhenheit, K- Kelvin")
+}
+
+func main() {
+
+	var inputTemp float64
+	flag.Parse()
+
+	switch {
+	case isFlagPassed("F"):
+		inputTemp = fahr
+	case isFlagPassed("C"):
+		inputTemp = celsius
+	case isFlagPassed("K"):
+		inputTemp = kelvin
+	default:
+		fmt.Println("No input temperature provided.")
+		return
+	}
+
+	// Konverterer input temperatur til Celsius
+	switch {
+	case isFlagPassed("F"):
+		celsius = conv.FahrenheitToCelsius(inputTemp)
+	case isFlagPassed("K"):
+		celsius = conv.KelvinToCelsius(inputTemp)
+	}
+
+	// Konverterer Celsius til output temperatur
+	switch out {
+	case "C":
+		fmt.Printf("%.2f°C\n", celsius)
+	case "F":
+		fahr = conv.CelsiusToFahrenheit(celsius)
+		fmt.Printf("%.2f°F\n", fahr)
+	case "K":
+		kelvin = conv.CelsiusToKelvin(celsius)
+		fmt.Printf("%.2f°K\n", kelvin)
+	default:
+		fmt.Println("Invalid output temperature specified.")
+		return
+	}
+}
+
+// Funksjonen sjekker om flagget er spesifisert på kommandolinje
+func isFlagPassed(name string) bool {
+	var found bool
+	flag.Visit(func(f *flag.Flag) {
+		if f.Name == name {
+			found = true
+		}
+	})
+	return found
+}
+
+/*
 
 // Definerer flag-variablene i hoved-"scope"
 var fahr float64
@@ -18,12 +83,6 @@ var out string
 // er initialisert.
 func init() {
 
-	/*
-	   Her er eksempler på hvordan man implementerer parsing av flagg.
-	   For eksempel, kommando
-	       funtemps -F 0 -out C
-	   skal returnere output: 0°F er -17.78°C
-	*/
 
 	// Definerer og initialiserer flagg-variablene
 	flag.Float64Var(&fahr, "F", 0.0, "temperatur i grader fahrenheit")
@@ -87,31 +146,6 @@ func main() {
 }
 
 
-	/**
-	    Her må logikken for flaggene og kall til funksjoner fra conv og funfacts
-	    pakkene implementeres.
-
-	    Det er anbefalt å sette opp en tabell med alle mulige kombinasjoner
-	    av flagg. flag-pakken har funksjoner som man kan bruke for å teste
-	    hvor mange flagg og argumenter er spesifisert på kommandolinje.
-
-	        fmt.Println("len(flag.Args())", len(flag.Args()))
-			    fmt.Println("flag.NFlag()", flag.NFlag())
-
-	    Enkelte kombinasjoner skal ikke være gyldige og da må kontrollstrukturer
-	    brukes for å utelukke ugyldige kombinasjoner:
-	    -F, -C, -K kan ikke brukes samtidig
-	    disse tre kan brukes med -out, men ikke med -funfacts
-	    -funfacts kan brukes kun med -t
-	    ...
-	    Jobb deg gjennom alle tilfellene. Vær obs på at det er en del sjekk
-	    implementert i flag-pakken og at den vil skrive ut "Usage" med
-	    beskrivelsene av flagg-variablene, som angitt i parameter fire til
-	    funksjonene Float64Var og StringVar
-	*/
-
-// Bruk pakken conv til å konvertere temperaturer
-// funksjonen vil konvertere temperaturen fra F, C eller K til de to andre
 
 /*
 func convertTemp(temp float64, from string, to string) (float64, error) {
@@ -169,26 +203,7 @@ func convertAllTempScales(temp float64, from string) (float64, float64, error) {
         return 0, 0, fmt.Errorf("invalid from scale: %s", from)
     }
 }
-*/
 
-	// Her er noen eksempler du kan bruke i den manuelle testingen
-/*
-	fmt.Println(fahr, out, funfacts)
-
-	fmt.Println("len(flag.Args())", len(flag.Args()))
-	fmt.Println("flag.NFlag()", flag.NFlag())
-
-	fmt.Println(isFlagPassed("out"))
-
-	// Eksempel på enkel logikk
-	if out == "C" && isFlagPassed("F") {
-		// Kalle opp funksjonen FahrenheitToCelsius(fahr), som da
-		// skal returnere °C
-		fmt.Println("0°F er -17.78°C")
-	}
-
-}
-*/
 
 // Funksjonen sjekker om flagget er spesifisert på kommandolinje
 // Du trenger ikke å bruke den, men den kan hjelpe med logikken
@@ -201,3 +216,4 @@ func isFlagPassed(name string) bool {
 	})
 	return found
 }
+*/
